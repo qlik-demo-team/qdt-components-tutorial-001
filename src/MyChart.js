@@ -1,5 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 
+import appPromise from './config/app';
+
+appPromise.then((app) => {
+  console.log(app);
+})
+
 const hypercube = {
   qInfo: { qId: 'Sales by Year', qType: 'data'},
   qHyperCubeDef: {
