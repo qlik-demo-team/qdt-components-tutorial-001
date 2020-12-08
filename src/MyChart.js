@@ -1,10 +1,9 @@
-import React, { useEffect, useRef } from 'react';
-import { qdtCompose, QdtPicasso, useBarChartSettings, usePieChartSettings, QdtButton } from 'qdt-components';
+import React, { useEffect, useRef, useState } from 'react';
+import { qdtCompose, QdtPicasso, useBarChartSettings, usePieChartSettings, QdtButton, useLineChartSettings } from 'qdt-components';
+import cAppPromise from './config/cApp';
 import appPromise from './config/app';
-
-appPromise.then((app) => {
-  console.log(app);
-})
+import ReactModal from 'react-modal';
+import Filter from './Filter';
 
 const hypercube = {
   qInfo: { qId: 'Sales by Year', qType: 'data'},
@@ -29,6 +28,8 @@ const MyChart = () => {
   const barChart = useRef(null);
   const pieChart = useRef(null);
   const clearButton = useRef(null);
+  const lineChart = useRef(null);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -66,14 +67,44 @@ const MyChart = () => {
           label: 'Clear Selections'
         }
       })
+
+      qdtCompose({
+        app, 
+        element: lineChart.current,
+        component: QdtPicasso,
+        options: {
+          settings: useLineChartSettings(),
+        },
+        properties: hypercube,
+        loading: () => null,
+      })
+
+
     })()
   }, [])
+
+  const handleClose = () => setOpen(false);
+
+  const handleOpen = () => setOpen(true);
+
+
   return (
     <div>
       <h2>My Charts</h2>
+      <button onClick={handleOpen}>Open Modal</button>
+      <ReactModal isOpen={open}>
+        <h1>MODAL</h1>
+        <Filter cAppPromise={cAppPromise} id="mHzvAm" options={{ height: 100 }} />
+        <Filter cAppPromise={cAppPromise} id="mHzvAm" options={{ height: 100 }} />
+        <Filter cAppPromise={cAppPromise} id="mHzvAm" options={{ height: 100 }} />
+        <Filter cAppPromise={cAppPromise} id="mHzvAm" options={{ height: 100 }} />
+        <Filter cAppPromise={cAppPromise} id="mHzvAm" options={{ height: 100 }} />
+        <Filter cAppPromise={cAppPromise} id="mHzvAm" options={{ height: 100 }} />
+      </ReactModal>
       <div ref={clearButton} style={{ margin: '10px auto', width: 250 }} />
       <div ref={barChart} style={{ height: 400, paddingTop: 50 }} />
       <div ref={pieChart} style={{ height: 400, paddingTop: 50 }} />
+      <div ref={lineChart} style={{ height: 100, paddingTop: 50 }} />
     </div>
   )
 }
